@@ -2,7 +2,8 @@ const loadPage = () => {
   devTest()
 }
 document.addEventListener('DOMContentLoaded', loadPage)
-
+let currentPage = 1
+const numberOfPhotos = 10
 const photos = []
 const devTest = async () => {
   await fetch('https://jsonplaceholder.typicode.com/photos')
@@ -10,30 +11,39 @@ const devTest = async () => {
     .then((json) => {
       photos.push(...json)
       displayPhoto(photos.slice(currentPage - 1, currentPage + numberOfPhotos))
-      displayTopNav(photos.length)
+      displayNav(photos.length)
     })
 }
-let currentPage = 1
-const numberOfPhotos = 10
-function displayTopNav(totalPhotos) {
+
+function displayNav(totalPhotos) {
   const totalPages = totalPhotos
     ? totalPhotos / numberOfPhotos
     : photos.length / numberOfPhotos
-  const top = document.getElementById('top-pagination')
-  top.innerHTML = ''
+  const topNav = document.getElementById('top-pagination')
+  displayNavElement(topNav, totalPages)
+  const bottomNav = document.getElementById('bottom-pagination')
+  displayNavElement(bottomNav, totalPages)
+}
+
+function displayNavElement(nav, totalPages) {
+  nav.innerHTML = ''
   if (currentPage !== 1) {
-    top.appendChild(createList(false, false, '<<', 'first'))
-    top.appendChild(createList(false, false, '<', 'prev'))
-    top.appendChild(createList(false, false, currentPage - 1, currentPage - 1))
+    nav.appendChild(createList(false, false, '<<', 'first'))
+    nav.appendChild(createList(false, false, '<', 'prev'))
+    nav.appendChild(createList(false, false, currentPage - 1, currentPage - 1))
   }
-  top.appendChild(createList(true, false, currentPage, currentPage))
+  nav.appendChild(createList(true, false, currentPage, currentPage))
 
   if (currentPage !== totalPages) {
-    top.appendChild(createList(false, false, currentPage + 1, currentPage + 1))
-    top.appendChild(createList(false, false, '...', 'no-action'))
-    top.appendChild(createList(false, false, totalPages, totalPages))
-    top.appendChild(createList(false, true, '>', 'next'))
-    top.appendChild(createList(false, true, '>>', 'last'))
+    if (currentPage + 1 !== totalPages) {
+      nav.appendChild(
+        createList(false, false, currentPage + 1, currentPage + 1)
+      )
+    }
+    nav.appendChild(createList(false, false, '...', 'no-action'))
+    nav.appendChild(createList(false, false, totalPages, totalPages))
+    nav.appendChild(createList(false, false, '>', 'next'))
+    nav.appendChild(createList(false, false, '>>', 'last'))
   }
 }
 
@@ -96,7 +106,7 @@ function handleSelectPage(id) {
   } else {
     currentPage = +id
   }
-  displayTopNav()
+  displayNav()
   displayPhoto(
     photos.slice(
       (currentPage - 1) * numberOfPhotos,
