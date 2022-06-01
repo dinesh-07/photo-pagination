@@ -134,6 +134,7 @@ function createPhotoContainer(photo) {
   const imageElement = document.createElement('img')
   imageElement.src = photo.url
   imageElement.classList.add('card-img-top')
+  imageElement.style.marginTop ='10px'
   imageElement.alt = photo.title
 
   const card = document.createElement('div')
