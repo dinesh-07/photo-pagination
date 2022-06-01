@@ -140,7 +140,7 @@ function createPhotoContainer(photo) {
   const card = document.createElement('div')
   card.setAttribute('id', photo.id)
   card.classList.add('card')
-  card.style.width = '15rem'
+  card.style.width = '17rem'
   card.appendChild(imageElement)
   card.appendChild(cardBody)
   return card

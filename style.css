@@ -15,3 +15,7 @@ li {
 .nav-element {
   margin-top: 20px;
 }
+
+#photo-container {
+  justify-content: center;
+}
